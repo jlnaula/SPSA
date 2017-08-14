@@ -81,6 +81,7 @@
 
 - (void)yesButtonPressed:(id)sender{
     [self closePopup];
+    [delegate_ confirmAnswer];
 }
 
 - (void)noButtonPressed:(id)sender{
