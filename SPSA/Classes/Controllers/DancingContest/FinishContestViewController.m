@@ -58,7 +58,7 @@
     [self.navigationItem setBackBarButtonItem:backButtonItem];
     [self.navigationItem setHidesBackButton:YES];
     
-    UIBarButtonItem *menuButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_menu_white"]]];
+    UIBarButtonItem *menuButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]]];
     [self.navigationItem setRightBarButtonItem:menuButtonItem];
 }
 
