@@ -24,6 +24,10 @@
 @property (nonatomic,weak) IBOutlet UILabel *lblQuestion;
 @property (nonatomic,weak) IBOutlet UIButton *btnQuestion;
 
+@property (nonatomic) BOOL isActiveQuestion;
+@property (nonatomic) BOOL isDeactiveQuestion;
+@property (nonatomic) BOOL isAnsweredQuestion;
+
 @property (nonatomic,strong) QuestionEntity *questionEntity;
 
 @end

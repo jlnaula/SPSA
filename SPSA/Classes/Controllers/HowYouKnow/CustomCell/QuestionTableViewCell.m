@@ -14,7 +14,8 @@
     [super awakeFromNib];
     // Initialization code
     
-    [self.btnQuestion addTarget:self action:@selector(questionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_btnQuestion setEnabled:NO];
+    [_btnQuestion addTarget:self action:@selector(questionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -26,7 +27,24 @@
 - (void)setQuestionEntity:(QuestionEntity *)questionEntity {
     _questionEntity = questionEntity;
     
-    [_lblQuestion setText:questionEntity.questionDescription];
+    if (_isActiveQuestion) {
+        [_lblQuestion setText:questionEntity.questionDescription];
+        [_imgQuestionBox setImage:[UIImage imageNamed:@"img_question_box_empty"]];
+        [_btnQuestion setEnabled:YES];
+    } else {
+        [_lblQuestion setText:@""];
+        [_imgQuestionBox setImage:[UIImage imageNamed:@"img_question_box"]];
+        [_btnQuestion setEnabled:NO];
+    }
+    
+    if (_isDeactiveQuestion) {
+        [_btnQuestion setEnabled:NO];
+    }
+    
+    if (_isAnsweredQuestion) {
+        [_btnQuestion setEnabled:NO];
+    }
+    
 }
 
 - (void)questionButtonPressed:(id)sender {

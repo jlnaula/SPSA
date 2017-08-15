@@ -16,8 +16,9 @@
 
 @property (nonatomic,strong) UserEntity *userEntity;
 @property (nonatomic,strong) NSArray *questionsArr;
+@property (nonatomic,strong) NSArray *questionsArrAfterReload;
 @property (nonatomic,strong) NSArray *deactivatedQuestionsArr;
 @property (nonatomic,strong) NSDictionary *questionActiveTime;
-@property (nonatomic,strong) NSString *question_id;
+@property (nonatomic,strong) NSString *question_id; //Active question
 
 @end

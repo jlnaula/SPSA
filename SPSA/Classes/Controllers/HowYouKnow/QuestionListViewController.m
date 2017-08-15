@@ -88,51 +88,59 @@
     
     [cell setDelegate:self];
     
-    QuestionEntity *questionEntity = _questionsArr[indexPath.row];
-    
-    [cell setQuestionEntity:questionEntity];
-
-    
-    if ([_question_id isEqualToString:questionEntity.idf]) {
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS'Z'"];
-        NSDate *date = [dateFormat dateFromString:[_questionActiveTime objectForKey:@"date"]];
+    if (_questionsArrAfterReload.count > 0) {
+        QuestionEntity *questionEntity = _questionsArrAfterReload[indexPath.row];
         
-        NSDate *currentDate = [NSDate new];
-        
-        if ([date compare:currentDate] == NSOrderedDescending) {
-            NSLog(@"date is later than currentDate");
-        } else if ([date compare:currentDate] == NSOrderedAscending) {
-            NSLog(@"date is earlier than currentDate");
-            [cell.imgCheck setImage:[UIImage imageNamed:@"img_x"]];
-            [cell.btnQuestion setEnabled:NO];
+        if ([_question_id isEqualToString:questionEntity.idf]) {
+            
+            [cell setIsActiveQuestion:YES];
+            
+            
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS'Z'"];
+            NSDate *date = [dateFormat dateFromString:[_questionActiveTime objectForKey:@"date"]];
+            
+            NSDate *currentDate = [NSDate new];
+            
+            if ([date compare:currentDate] == NSOrderedDescending) {
+                NSLog(@"date is later than currentDate");
+            } else if ([date compare:currentDate] == NSOrderedAscending) {
+                NSLog(@"date is earlier than currentDate");
+                [cell setIsDeactiveQuestion:YES];
+                [cell.imgCheck setImage:[UIImage imageNamed:@"img_x"]];
+            } else {
+                NSLog(@"dates are the same");
+            }
+            
         } else {
-            NSLog(@"dates are the same");
+            
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF == %@",questionEntity.idf];
+            NSArray *filteredArray = [_deactivatedQuestionsArr filteredArrayUsingPredicate:predicate];
+            
+            if (filteredArray.count > 0) {
+                
+                [cell setIsDeactiveQuestion:YES];
+                [cell.imgCheck setImage:[UIImage imageNamed:@"img_x"]];
+            }
+            
         }
         
-    } else {
-        
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF == %@",questionEntity.idf];
-        NSArray *filteredArray = [_deactivatedQuestionsArr filteredArrayUsingPredicate:predicate];
+        NSMutableArray *answeredArr = [[NSUserDefaults standardUserDefaults] objectForKey:@"arrAnswered"];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"question_id == %@",questionEntity.idf];
+        NSArray *filteredArray = [answeredArr filteredArrayUsingPredicate:predicate];
         
         if (filteredArray.count > 0) {
-            [cell.imgCheck setImage:[UIImage imageNamed:@"img_x"]];
-            [cell.btnQuestion setEnabled:NO];
+            if ([[filteredArray[0] objectForKey:@"answer_correct"] boolValue]) {
+                [cell.imgCheck setImage:[UIImage imageNamed:@"img_check"]];
+            } else {
+                [cell.imgCheck setImage:[UIImage imageNamed:@"img_x"]];
+            }
+            [cell setIsAnsweredQuestion:YES];
         }
+
+        [cell setQuestionEntity:questionEntity];
         
-    }
-    
-    NSMutableArray *answeredArr = [[NSUserDefaults standardUserDefaults] objectForKey:@"arrAnswered"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"question_id == %@",questionEntity.idf];
-    NSArray *filteredArray = [answeredArr filteredArrayUsingPredicate:predicate];
-    
-    if (filteredArray.count > 0) {
-        if ([[filteredArray[0] objectForKey:@"answer_correct"] boolValue]) {
-            [cell.imgCheck setImage:[UIImage imageNamed:@"img_check"]];
-        } else {
-            [cell.imgCheck setImage:[UIImage imageNamed:@"img_x"]];
-        }
-        [cell.btnQuestion setEnabled:NO];
+        
     }
     
     return cell;
@@ -178,18 +186,20 @@
     
     if ([response objectForKey:@"status"] && [[response objectForKey:@"status"] isEqualToString:@"success"]) {
         
-        NSMutableArray *deactivatedQuestionsArr = [[NSMutableArray alloc] init];
-        for (NSDictionary *deactivatedQuestion in [response objectForKey:@"deactivated_questions"]) {
-            [deactivatedQuestionsArr addObject:[NSString stringWithFormat:@"%@",[deactivatedQuestion objectForKey:@"question_id"]]];
+        if ([response objectForKey:@"deactivated_questions"] && [response objectForKey:@"question_id"]) {
+            NSMutableArray *deactivatedQuestionsArr = [[NSMutableArray alloc] init];
+            for (NSDictionary *deactivatedQuestion in [response objectForKey:@"deactivated_questions"]) {
+                [deactivatedQuestionsArr addObject:[NSString stringWithFormat:@"%@",[deactivatedQuestion objectForKey:@"question_id"]]];
+            }
+            
+            
+            _deactivatedQuestionsArr = deactivatedQuestionsArr;
+            _questionActiveTime = [response objectForKey:@"question_active_time"];
+            _question_id = [NSString stringWithFormat:@"%@",[response objectForKey:@"question_id"]];
+            
+            _questionsArrAfterReload = _questionsArr;
+            [_tblQuestions reloadData];
         }
-        
-        
-        _deactivatedQuestionsArr = deactivatedQuestionsArr;
-        _questionActiveTime = [response objectForKey:@"question_active_time"];
-        _question_id = [NSString stringWithFormat:@"%@",[response objectForKey:@"question_id"]];
-        
-        [_tblQuestions reloadData];
-        
     }
     
 }

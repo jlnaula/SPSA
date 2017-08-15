@@ -9,6 +9,7 @@
 #import "ApiConstants.h"
 
 NSString *const API_URL_BASE = @"http://13.58.168.88/juegos_spsa/";
+//NSString *const API_URL_BASE = @"http://18.220.23.80/juegos_spsa/";
 NSString *const API_URL_BASE2 = @"http://34.201.27.155/";
 
 NSString *const POST = @"POST";
