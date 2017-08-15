@@ -131,6 +131,11 @@
     [self callVote:teamEntity];
 }
 
+- (void)resetAnswer {
+    [btnAlternativeSelected setBackgroundColor:[UIColor spsaAlternativeButtonLightGray]];
+    [btnAlternativeSelected setTitleColor:[UIColor spsaTextColor] forState:UIControlStateNormal];
+}
+
 #pragma mark - GenericPopupView
 
 - (void)showGenericPopupView:(NSDictionary*)data {

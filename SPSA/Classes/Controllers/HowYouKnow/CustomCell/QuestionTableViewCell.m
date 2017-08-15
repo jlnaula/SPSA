@@ -42,6 +42,7 @@
     }
     
     if (_isAnsweredQuestion) {
+        [_lblQuestion setText:questionEntity.questionDescription];
         [_btnQuestion setEnabled:NO];
     }
     

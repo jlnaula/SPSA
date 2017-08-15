@@ -11,6 +11,7 @@
 @protocol GenericPopupViewDelegate
 
 - (void)confirmAnswer;
+- (void)resetAnswer;
 
 @end
 

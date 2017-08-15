@@ -86,6 +86,7 @@
 
 - (void)noButtonPressed:(id)sender{
     [self closePopup];
+    [delegate_ resetAnswer];
 }
 
 -(void)closePopup {

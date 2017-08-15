@@ -122,9 +122,15 @@
 
 - (void)confirmAnswer {
     
+    [timer invalidate];
     AnswerEntity *answerEntity = _questionEntity.answersArr[btnAlternativeSelected.tag];
     [self sendAnswer:answerEntity withConfirmation:YES];
     
+}
+
+- (void)resetAnswer {
+    [btnAlternativeSelected setBackgroundColor:[UIColor spsaAlternativeButtonLightGray]];
+    [btnAlternativeSelected setTitleColor:[UIColor spsaTextColor] forState:UIControlStateNormal];
 }
 
 #pragma mark - GenericPopupView
@@ -142,7 +148,7 @@
 
 - (void)sendAnswer:(AnswerEntity *)answerEntity withConfirmation:(BOOL)confirmation{
     
-    NSMutableArray *answeredArr = [[NSUserDefaults standardUserDefaults] objectForKey:@"arrAnswered"];
+    NSMutableArray *answeredArr = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"arrAnswered"]];
     
     if (answeredArr == nil) {
         answeredArr = [[NSMutableArray alloc] init];
