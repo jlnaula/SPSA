@@ -43,6 +43,7 @@
     
     if (_isAnsweredQuestion) {
         [_lblQuestion setText:questionEntity.questionDescription];
+        [_imgQuestionBox setImage:[UIImage imageNamed:@"img_question_box_empty"]];
         [_btnQuestion setEnabled:NO];
     }
     
