@@ -62,27 +62,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="S1h-dH-RZe">
-                                <rect key="frame" x="15" y="297.5" width="290" height="245.5"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
-                                <state key="normal" title="Button" image="btn_mainmenu_cuanto_sabes"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="AN1-2L-aoH">
-                                <rect key="frame" x="15" y="20" width="290" height="245.5"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button" image="btn_mainmenu_talento"/>
-                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="fus-ir-g7p">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="AN1-2L-aoH">
+                                        <rect key="frame" x="15" y="20" width="290" height="245.5"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button" image="btn_mainmenu_talento"/>
+                                        <state key="disabled" image="btn_mainmenu_talento_disabled"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="S1h-dH-RZe">
+                                        <rect key="frame" x="15" y="297.5" width="290" height="245.5"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                                        <state key="normal" title="Button" image="btn_mainmenu_cuanto_sabes"/>
+                                    </button>
+                                </subviews>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="btnDancingContest" destination="AN1-2L-aoH" id="lKi-9Y-pk1"/>
                         <outlet property="btnHowYouKnow" destination="S1h-dH-RZe" id="XqT-ZZ-Nd2"/>
+                        <outlet property="scrollView" destination="fus-ir-g7p" id="cYy-XN-8wJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pbK-Uj-fSM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="667.5" y="-90.499999999999986"/>
+            <point key="canvasLocation" x="667" y="-91"/>
         </scene>
         <!--Dancing Contest View Controller-->
         <scene sceneID="KLv-Ab-GMd">
@@ -464,6 +472,7 @@
         <image name="btn_macedonia" width="689" height="207"/>
         <image name="btn_mainmenu_cuanto_sabes" width="1087" height="860"/>
         <image name="btn_mainmenu_talento" width="1087" height="860"/>
+        <image name="btn_mainmenu_talento_disabled" width="544" height="430"/>
         <image name="img_background_gray" width="1240" height="1543"/>
         <image name="img_background_green" width="1242" height="2208"/>
         <image name="img_background_init" width="1242" height="2208"/>

@@ -10,8 +10,15 @@
 #import "DancingContestViewController.h"
 #import "HowYouKnowViewController.h"
 #import "UIColor+SPSA.h"
+#import "QueryWebService.h"
+#import "ApiConstants.h"
+#import "SVProgressHUD.h"
 
-@interface HomeViewController ()
+@interface HomeViewController () {
+    
+    UIRefreshControl *refreshControl;
+    
+}
 
 @end
 
@@ -25,6 +32,14 @@
     
     [self.btnDancingContest addTarget:self action:@selector(dancingContestButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnHowYouKnow addTarget:self action:@selector(howYouKnowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    refreshControl = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(didPullToRefresh) forControlEvents:UIControlEventValueChanged];
+    
+    [self.scrollView setContentSize:self.view.frame.size];
+    [self.scrollView addSubview:refreshControl];
+    
+    [self callVoteStatus];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -49,13 +64,6 @@
     UIBarButtonItem *menuButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_menu_white"]]];
     [self.navigationItem setRightBarButtonItem:menuButtonItem];
     
-    NSString *has_voted = [[NSUserDefaults standardUserDefaults] objectForKey:@"has_voted"];
-    
-    if ([has_voted boolValue]) {
-        
-        [self.btnDancingContest setTintColor:[UIColor grayColor]];
-        [self.btnDancingContest setEnabled:NO];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -80,6 +88,12 @@
     
 }
 
+#pragma mark - action methods
+
+- (void)didPullToRefresh {
+    NSLog(@"didPullToRefresh");
+    [self callVoteStatus];
+}
 
 #pragma mark - action methods
 
@@ -95,6 +109,42 @@
     [howYouKnowViewController setUserEntity:_userEntity];
     [howYouKnowViewController setQuestionsArr:_questionsArr];
     [[self navigationController] pushViewController:howYouKnowViewController animated:YES];
+}
+
+#pragma mark - endPoint methods
+
+-(void)callVoteStatus{
+    
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endVoteStatus:) name:@"endVoteStatus" object:nil];
+    
+    NSDictionary *params = nil;
+    
+    [[QueryWebService sharedInstance] getDataFromPath:[NSString stringWithFormat:NSLocalizedString(URL_VOTE, nil)] withMethod:GET withParamData:params withNotification:@"endVoteStatus"];
+    
+}
+
+-(void)endVoteStatus:(NSNotification*)notification{
+    
+    [SVProgressHUD dismiss];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notification.name object:nil];
+    
+    NSDictionary *response = (NSDictionary*)notification.object;
+    
+    if ([response objectForKey:@"status"] && [[response objectForKey:@"status"] isEqualToString:@"success"]) {
+        
+        BOOL hasVoted = [[[NSUserDefaults standardUserDefaults] objectForKey:@"has_voted"] boolValue];
+        BOOL isVotingEnabled = [[response objectForKey:@"vote_status"] boolValue];
+        BOOL enableVoting = isVotingEnabled && !hasVoted;
+        
+        [self.btnDancingContest setEnabled:enableVoting];
+        
+    }
+    
+    [refreshControl endRefreshing];
+    
 }
 
 @end

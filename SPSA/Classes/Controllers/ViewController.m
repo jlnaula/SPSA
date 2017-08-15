@@ -136,6 +136,8 @@
     
 }
 
+#pragma mark - Class methods
+
 - (NSMutableArray *)teamsList:(NSDictionary *)teamsDict{
     NSMutableArray *teamsArray = [NSMutableArray array];
     for (NSDictionary *teambean in teamsDict) {

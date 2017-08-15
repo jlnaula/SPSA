@@ -11,6 +11,7 @@
 
 @interface HomeViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic,weak) IBOutlet UIButton *btnDancingContest;
 @property (nonatomic,weak) IBOutlet UIButton *btnHowYouKnow;
 
